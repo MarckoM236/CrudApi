@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.marco.crudapi.Product.Dto.ProductRequest;
 import com.marco.crudapi.Product.Entity.Product;
 import com.marco.crudapi.Product.Repository.ProductRepository;
 
@@ -31,19 +32,28 @@ public class ProductService {
     }
 
     //create product
-    public Product createProduct(Product product){
+    public Product createProduct(ProductRequest productRequest){
+        //map product
+        Product product = new Product();
+        product.setName(productRequest.name());
+        product.setPrice(productRequest.price());
+
         Product productSave = repository.save(product);
 
         return productSave;
     }
 
     //update product
-    public Optional<Product> updateProduct(Long id,Product product){
+    public Optional<Product> updateProduct(Long id,ProductRequest productRequest){
         if(!repository.existsById(id)){
             return Optional.empty();
         }
 
+        //map product
+        Product product = new Product();
         product.setId(id);
+        product.setName(productRequest.name());
+        product.setPrice(productRequest.price());
 
         Product productUp = repository.save(product);
 

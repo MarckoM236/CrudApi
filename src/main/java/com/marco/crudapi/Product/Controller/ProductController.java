@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.marco.crudapi.Product.Dto.ProductRequest;
 import com.marco.crudapi.Product.Entity.Product;
 import com.marco.crudapi.Product.Service.ProductService;
 
@@ -53,7 +54,7 @@ public class ProductController{
 
     @CrossOrigin
     @PostMapping()
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest product) {
         Product saveProduct = service.createProduct(product);
 
         return ResponseEntity.status(201).body(saveProduct);
@@ -61,7 +62,7 @@ public class ProductController{
 
     @CrossOrigin
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
         
         Optional<Product> productUp = service.updateProduct(id,product);
 
