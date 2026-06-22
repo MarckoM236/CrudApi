@@ -2,14 +2,20 @@ package com.marco.crudapi.Product.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.marco.crudapi.Product.Entity.Product;
 import com.marco.crudapi.Product.Service.ProductService;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Optional;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 
@@ -17,16 +23,66 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/products")
 public class ProductController{
 
-     private final ProductService service;
+    private final ProductService service;
 
     public ProductController(ProductService service) {
         this.service = service;
     }
 
+    @CrossOrigin
     @GetMapping()
-    public List<Product> getProducts() {
-        return service.getAll();
+    public ResponseEntity< List<Product> > getProducts() {
+        List<Product> products =service.getAll();
+
+        return ResponseEntity.ok(products);
+  
     }
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+
+        Optional<Product> product =service.getProductById(id);
+
+        if(product.isPresent()){
+            return ResponseEntity.ok(product.get());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @CrossOrigin
+    @PostMapping()
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product saveProduct = service.createProduct(product);
+
+        return ResponseEntity.status(201).body(saveProduct);
+    }
+
+    @CrossOrigin
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        
+        Optional<Product> productUp = service.updateProduct(id,product);
+
+        if(productUp.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(productUp.get());
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
+        if(service.deleteProduct(id) == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+    
+    
     
     
 
