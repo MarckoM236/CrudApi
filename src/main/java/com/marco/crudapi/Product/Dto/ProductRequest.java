@@ -12,6 +12,6 @@ public record ProductRequest(
     @Positive
     Double price
 
-){};
+){}
 
 
