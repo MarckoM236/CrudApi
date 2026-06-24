@@ -9,16 +9,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marco.crudapi.Auth.Dto.SuccessAuthResponse;
 import com.marco.crudapi.Auth.Service.AuthService;
+import com.marco.crudapi.User.Dto.RequestUserDto;
+import com.marco.crudapi.User.Dto.ResponseUserDto;
 import com.marco.crudapi.User.Entity.User;
+import com.marco.crudapi.User.Service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(AuthService service) {
+    public AuthController(AuthService service, UserService userService) {
         this.authService = service;
+        this.userService = userService;
     }
 
     @CrossOrigin
@@ -31,6 +36,19 @@ public class AuthController {
         );
         
         return ResponseEntity.status(200).body(responseAuth);
+    }
+
+    @CrossOrigin
+    @PostMapping("/register")
+    public ResponseEntity<ResponseUserDto> registerUser(@RequestBody RequestUserDto user) {
+        User saveUser = userService.createUser(user);
+
+        ResponseUserDto resUser = new ResponseUserDto(
+            saveUser.getName(),
+            saveUser.getEmail()
+        );
+
+        return ResponseEntity.status(201).body(resUser);
     }
     
 }

@@ -1,5 +1,7 @@
 package com.marco.crudapi.User.Service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,10 @@ public class UserService {
 
         User saveUser = userRepository.save(user);
         return saveUser;
+    }
+
+    public Optional<User> userByEmail(String email){
+        return userRepository.findByEmailContaining(email);
     }
 
     
