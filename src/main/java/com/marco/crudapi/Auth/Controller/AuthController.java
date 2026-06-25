@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marco.crudapi.Auth.Dto.RequestUserAuth;
 import com.marco.crudapi.Auth.Dto.SuccessAuthResponse;
 import com.marco.crudapi.Auth.Service.AuthService;
 import com.marco.crudapi.User.Dto.RequestUserDto;
 import com.marco.crudapi.User.Dto.ResponseUserDto;
 import com.marco.crudapi.User.Entity.User;
 import com.marco.crudapi.User.Service.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,7 +31,11 @@ public class AuthController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<SuccessAuthResponse> login(@RequestBody User user) {
+    @Operation(
+        summary = "Get JWT token.", 
+        description = "Validates the user's credentials and returns a JWT token."
+    )
+    public ResponseEntity<SuccessAuthResponse> login(@RequestBody RequestUserAuth user) {
 
         String token = authService.login(user);
         SuccessAuthResponse responseAuth = new SuccessAuthResponse(
@@ -40,6 +47,10 @@ public class AuthController {
 
     @CrossOrigin
     @PostMapping("/register")
+    @Operation(
+        summary = "Create user API.", 
+        description = "Create a user to use the API."
+    )
     public ResponseEntity<ResponseUserDto> registerUser(@RequestBody RequestUserDto user) {
         User saveUser = userService.createUser(user);
 

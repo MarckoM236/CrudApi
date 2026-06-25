@@ -12,6 +12,8 @@ import com.marco.crudapi.User.Dto.ResponseUserDto;
 import com.marco.crudapi.User.Entity.User;
 import com.marco.crudapi.User.Service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -23,6 +25,10 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping()
+    @Operation(
+        summary = "Create user API.", 
+        description = "Create a user to use the API."
+    )
     public ResponseEntity<ResponseUserDto> createUser(@RequestBody RequestUserDto user) {
         User saveUser = userService.createUser(user);
 

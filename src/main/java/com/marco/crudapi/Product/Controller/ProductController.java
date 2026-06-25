@@ -14,6 +14,8 @@ import com.marco.crudapi.Product.Dto.ProductRequest;
 import com.marco.crudapi.Product.Entity.Product;
 import com.marco.crudapi.Product.Service.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +34,10 @@ public class ProductController{
 
     @CrossOrigin
     @GetMapping()
+    @Operation(
+        summary = "Get all products.", 
+        description = "Returns a list of all products.."
+    )
     public ResponseEntity< List<Product> > getProducts() {
         List<Product> products =service.getAll();
 
@@ -41,6 +47,10 @@ public class ProductController{
 
     @CrossOrigin
     @GetMapping("/{id}")
+    @Operation(
+        summary = "Get a product.", 
+        description = "Returns a product by its ID."
+    )
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
 
         Optional<Product> product =service.getProductById(id);
@@ -54,6 +64,10 @@ public class ProductController{
 
     @CrossOrigin
     @PostMapping()
+    @Operation(
+        summary = "Create a product.", 
+        description = "Creates a new product."
+    )
     public ResponseEntity<Product> createProduct(@RequestBody ProductRequest product) {
         Product saveProduct = service.createProduct(product);
 
@@ -62,6 +76,10 @@ public class ProductController{
 
     @CrossOrigin
     @PutMapping("/{id}")
+    @Operation(
+        summary = "Update a product.", 
+        description = "Updates an existing product."
+    )
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
         
         Optional<Product> productUp = service.updateProduct(id,product);
@@ -75,6 +93,10 @@ public class ProductController{
 
     @CrossOrigin
     @DeleteMapping("/{id}")
+    @Operation(
+        summary = "Delete a product.", 
+        description = "Deletes a product by its ID."
+    )
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         if(service.deleteProduct(id) == null){
             return ResponseEntity.notFound().build();
